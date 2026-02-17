@@ -4,120 +4,161 @@ import Footer from '../../components/common/Footer';
 
 export default function Landing() {
   return (
-    <div className="min-h-screen flex flex-col font-[Montserrat] bg-gradient-to-br from-[#F8EFE2] to-[#B08B5E]">
-      <header className="w-full bg-[#5A371F] text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row gap-4 sm:gap-2 sm:items-center sm:justify-between">
-          <div className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-wide text-center sm:text-left">
-            AVANI ENTERPRISES
-          </div>
+    <div className="min-h-screen flex flex-col font-[Montserrat] bg-[#F8EFE2] text-[#4A2C14]">
+      {/* Sticky Header */}
+       <header className="w-full bg-[#5A371F] text-white shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
 
-          <nav className="flex items-center justify-center sm:justify-end gap-3 sm:gap-6 text-sm sm:text-base lg:text-lg">
-            <Link to="/login" className="hover:text-[#E8D5B5] transition">
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="bg-[#B08B5E] px-4 sm:px-5 py-2 rounded-xl font-semibold hover:bg-[#E8D5B5] hover:text-[#5A371F] transition"
-            >
-              Register
-            </Link>
-          </nav>
-        </div>
-      </header>
+        {/* Logo + Brand */}
+        <Link to="/" className="flex items-center gap-3">
+          <img
+            src="/image.png"
+            alt="Avani Enterprises Logo"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+          <span className="text-lg sm:text-xl font-bold tracking-wide">
+            AVANI <span className="text-[#B08B5E]">ENTERPRISES</span>
+          </span>
+        </Link>
 
-      <main className="flex-1 flex flex-col items-center justify-center text-center px-4 sm:px-6 py-14 sm:py-20">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#4A2C14] mb-5 sm:mb-6 leading-tight max-w-4xl">
-          Empowering Campus Placements
-        </h1>
-
-        <p className="text-base sm:text-lg md:text-xl text-[#4A2C14]/90 mb-8 sm:mb-10 max-w-3xl">
-          AVANI ENTERPRISES Placement Portal connects students, recruiters, and administrators into one powerful ecosystem designed for seamless campus hiring.
-        </p>
-
-        <div className="w-full max-w-md sm:max-w-none flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+        {/* Navigation */}
+        <nav className="flex items-center gap-4 sm:gap-6">
           <Link
             to="/login"
-            className="px-6 sm:px-10 py-3 sm:py-4 bg-[#5A371F] text-white rounded-2xl text-base sm:text-lg font-semibold shadow-xl hover:bg-[#4A2C14] hover:scale-105 transition-all duration-300"
+            className="text-sm font-semibold uppercase tracking-wide hover:text-[#B08B5E] transition"
           >
-            Get Started
+            Login
           </Link>
 
+          <Link
+            to="/register"
+            className="bg-white text-[#5A371F] px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider hover:bg-[#B08B5E] hover:text-white transition-all duration-300"
+          >
+            Join Portal
+          </Link>
+        </nav>
+      </div>
+    </header>
+
+      {/* Hero Section */}
+      <main className="relative flex-1 flex flex-col items-center justify-center text-center px-6 py-20 lg:py-32 overflow-hidden">
+        {/* Background Glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#B08B5E]/10 rounded-full blur-[120px] -z-10"></div>
+        
+        <div className="inline-block px-4 py-1.5 mb-8 rounded-full bg-[#B08B5E]/10 border border-[#B08B5E]/20">
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#7B4F1D]">The Future of Campus Recruitment</p>
+        </div>
+
+        <h1 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-8 leading-[0.9] tracking-tighter max-w-5xl">
+          Empowering <span className="text-[#B08B5E]">Careers</span>, <br /> 
+          Simplifying <span className="text-[#B08B5E]">Hiring</span>.
+        </h1>
+
+        <p className="text-base sm:text-xl text-[#4A2C14]/70 mb-12 max-w-2xl font-medium leading-relaxed">
+          A unified ecosystem connecting students, recruiters, and administrators for a seamless, data-driven placement journey.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto">
+          <Link
+            to="/login"
+            className="px-10 py-5 bg-[#5A371F] text-white rounded-2xl text-xs font-black uppercase tracking-widest shadow-2xl shadow-brown-900/40 hover:bg-[#4A2C14] hover:-translate-y-1 transition-all"
+          >
+            Get Started Now
+          </Link>
           <a
             href="#features"
-            className="px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#5A371F] text-[#5A371F] rounded-2xl text-base sm:text-lg font-semibold hover:bg-[#5A371F] hover:text-white transition-all duration-300"
+            className="px-10 py-5 border-2 border-[#5A371F] text-[#5A371F] rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-[#5A371F] hover:text-white transition-all"
           >
-            Learn More
+            See How It Works
           </a>
         </div>
       </main>
 
-      <section id="features" className="w-full max-w-6xl mx-auto py-14 sm:py-20 px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-10">
-        <div className="bg-white/90 rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 text-center hover:scale-105 transition duration-300">
-          <div className="text-4xl sm:text-5xl mb-5 sm:mb-6">Students</div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#5A371F] mb-3">For Students</h2>
-          <p className="text-sm sm:text-base text-[#5A371F]/80">
-            Build profile, upload resume, apply to drives, and track application status in real-time.
-          </p>
-        </div>
-
-        <div className="bg-white/90 rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 text-center hover:scale-105 transition duration-300">
-          <div className="text-4xl sm:text-5xl mb-5 sm:mb-6">Recruiters</div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#5A371F] mb-3">For Recruiters</h2>
-          <p className="text-sm sm:text-base text-[#5A371F]/80">
-            Post placement drives, filter candidates, shortlist and manage hiring efficiently.
-          </p>
-        </div>
-
-        <div className="bg-white/90 rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 text-center hover:scale-105 transition duration-300">
-          <div className="text-4xl sm:text-5xl mb-5 sm:mb-6">Admins</div>
-          <h2 className="text-xl sm:text-2xl font-bold text-[#5A371F] mb-3">For Admins</h2>
-          <p className="text-sm sm:text-base text-[#5A371F]/80">
-            Oversee placement workflow, manage users, and generate detailed analytics and reports.
-          </p>
+      {/* Trust Ribbon */}
+      <section className="bg-white py-10 border-y border-[#EADCC8]">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-8">
+          {[
+            { label: 'Registered Students', val: '2,500+' },
+            { label: 'Partner Corporations', val: '150+' },
+            { label: 'Job Offers Made', val: '980+' },
+            { label: 'Success Rate', val: '94%' },
+          ].map((stat, i) => (
+            <div key={i} className="text-center lg:text-left border-l-2 border-[#B08B5E]/20 pl-4">
+              <p className="text-2xl font-black text-[#5A371F]">{stat.val}</p>
+              <p className="text-[10px] font-bold text-[#B08B5E] uppercase tracking-widest mt-1">{stat.label}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="bg-[#5A371F] text-white py-12 sm:py-16 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 text-center">
-          <div>
-            <h3 className="text-3xl sm:text-4xl font-extrabold">1000+</h3>
-            <p className="mt-2 text-[#E8D5B5] text-sm sm:text-base">Registered Students</p>
-          </div>
-          <div>
-            <h3 className="text-3xl sm:text-4xl font-extrabold">75+</h3>
-            <p className="mt-2 text-[#E8D5B5] text-sm sm:text-base">Recruiting Companies</p>
-          </div>
-          <div>
-            <h3 className="text-3xl sm:text-4xl font-extrabold">500+</h3>
-            <p className="mt-2 text-[#E8D5B5] text-sm sm:text-base">Successful Placements</p>
-          </div>
+      {/* Roles / Features Section */}
+      <section id="features" className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-20">
+          <h2 className="text-3xl font-black uppercase tracking-tighter text-[#5A371F]">Tailored For Success</h2>
+          <div className="h-1 w-20 bg-[#B08B5E] mx-auto mt-4"></div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            { 
+              role: 'Students', 
+              icon: '👨‍🎓', 
+              desc: 'Build a dynamic profile, showcase your technical skills, and apply to top-tier companies with a single click.' 
+            },
+            { 
+              role: 'Recruiters', 
+              icon: '🏢', 
+              desc: 'Launch recruitment drives, filter talent using automated screening, and manage your pipeline efficiently.' 
+            },
+            { 
+              role: 'Admins', 
+              icon: '🛡️', 
+              desc: 'Oversee the entire placement cycle, verify candidate data, and generate deep-dive analytical reports.' 
+            }
+          ].map((item, i) => (
+            <div key={i} className="bg-white p-10 rounded-[3rem] shadow-sm border border-[#EADCC8] hover:shadow-2xl transition-all group hover:-translate-y-2 duration-500">
+              <div className="text-5xl mb-8 grayscale group-hover:grayscale-0 transition-all">{item.icon}</div>
+              <h3 className="text-xl font-black text-[#5A371F] mb-4 uppercase tracking-tighter">For {item.role}</h3>
+              <p className="text-sm text-[#4A2C14]/60 leading-relaxed font-medium">
+                {item.desc}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="py-14 sm:py-20 px-4 sm:px-6 bg-[#F8EFE2]">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#5A371F] mb-8">Why Choose AVANI ENTERPRISES?</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 text-left">
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#5A371F] mb-2">Seamless Workflow</h3>
-              <p className="text-sm sm:text-base text-[#5A371F]/80">Complete automation from job posting to final selection.</p>
+      {/* Value Proposition */}
+      <section className="bg-[#5A371F] py-24 px-6 text-white overflow-hidden relative">
+        <div className="absolute right-0 bottom-0 opacity-10 text-[20rem] font-black leading-none select-none translate-y-1/2 translate-x-1/4">
+          AVANI
+        </div>
+        
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-4xl font-black mb-8 leading-tight tracking-tight">Built on the Modern <br/><span className="text-[#B08B5E]">MERN Tech-Stack</span>.</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {[
+                { t: 'Secure Access', d: 'Role-based authentication with JWT security.' },
+                { t: 'Live Tracking', d: 'Real-time status updates for applications.' },
+                { t: 'PDF Engine', d: 'Instant resume previews and downloads.' },
+                { t: 'Analytics', d: 'Data visualization for placement trends.' }
+              ].map((point, i) => (
+                <div key={i}>
+                  <p className="text-[#B08B5E] font-black text-xs uppercase tracking-widest mb-1">{point.t}</p>
+                  <p className="text-xs text-white/60 font-medium leading-relaxed">{point.d}</p>
+                </div>
+              ))}
             </div>
-
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#5A371F] mb-2">Real-Time Tracking</h3>
-              <p className="text-sm sm:text-base text-[#5A371F]/80">Monitor applications and hiring status instantly.</p>
-            </div>
-
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#5A371F] mb-2">Secure and Reliable</h3>
-              <p className="text-sm sm:text-base text-[#5A371F]/80">Role-based authentication with secure data handling.</p>
-            </div>
-
-            <div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#5A371F] mb-2">Modern Dashboard</h3>
-              <p className="text-sm sm:text-base text-[#5A371F]/80">Clean UI built with MERN stack for smooth experience.</p>
-            </div>
+          </div>
+          <div className="bg-white/5 p-8 rounded-[3rem] border border-white/10 backdrop-blur-sm">
+             <p className="italic text-xl font-medium text-[#B08B5E]">"Our mission is to digitize the campus hiring experience, making it transparent, fast, and accessible for everyone involved."</p>
+             <div className="mt-6 flex items-center gap-4">
+                <div className="w-12 h-12 bg-[#B08B5E] rounded-full"></div>
+                <div>
+                  <p className="font-black text-sm uppercase">Development Team</p>
+                  <p className="text-[10px] text-white/40 uppercase font-bold tracking-widest">Avani Enterprises</p>
+                </div>
+             </div>
           </div>
         </div>
       </section>
