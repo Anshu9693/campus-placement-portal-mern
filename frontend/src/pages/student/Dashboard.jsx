@@ -3,6 +3,7 @@ import StudentLayout from '../../layouts/StudentLayout';
 import axiosInstance from '../../services/axiosInstance';
 import dashboardService from '../../services/dashboardService';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../../components/common/Loader'; // Added Loader
 
 export default function StudentDashboard() {
   const [stats, setStats] = useState({
@@ -22,19 +23,21 @@ export default function StudentDashboard() {
 
   const fetchStats = async () => {
     try {
-      const res = await dashboardService.getStudentDashboardStats();
-      
-      // Also fetch total drives for display
-      const drivesRes = await axiosInstance.get('/drives');
-      
+      setLoading(true);
+      // Fetch both simultaneously for efficiency
+      const [statsRes, drivesRes] = await Promise.all([
+        dashboardService.getStudentDashboardStats(),
+        axiosInstance.get('/drives')
+      ]);
+
       setStats({
-        applicationsCount: res.data.totalApplied || 0,
-        selectedCount: res.data.selected || 0,
-        drivesCount: drivesRes.data.length || 0,
+        applicationsCount: statsRes.data?.totalApplied || 0,
+        selectedCount: statsRes.data?.selected || 0,
+        drivesCount: drivesRes.data?.length || 0,
       });
     } catch (err) {
       console.error('Dashboard error:', err);
-      setError('Failed to load dashboard stats');
+      setError('Failed to sync dashboard data.');
     } finally {
       setLoading(false);
     }
@@ -43,30 +46,40 @@ export default function StudentDashboard() {
   const handleShowResume = async () => {
     try {
       const res = await axiosInstance.get('/students/profile');
-      
-      if (res.data.resume?.url) {
-        setResumeUrl(res.data.resume.url);
+      const url = res.data?.resume?.url;
+
+      if (url) {
+        setResumeUrl(url);
         setShowResumeModal(true);
       } else {
         setError('Resume not found. Please upload it in your profile.');
-        setTimeout(() => setError(''), 3000);
+        setTimeout(() => setError(''), 4000);
       }
     } catch (err) {
-      console.error('Fetch error:', err);
-      setError('Failed to load resume');
+      setError('Could not load resume. Please try again.');
       setTimeout(() => setError(''), 3000);
     }
   };
 
+  if (loading) return <Loader />;
+
   return (
     <StudentLayout>
       <div className="bg-[#F8EFE2] min-h-screen p-6 font-[Montserrat]">
-        <div className="max-w-7xl">
-          <h1 className="text-4xl font-bold text-[#7B4F1D] mb-8">Dashboard</h1>
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-4xl font-bold text-[#7B4F1D]">Dashboard</h1>
+            <button 
+              onClick={fetchStats}
+              className="text-sm font-semibold text-[#B08B5E] hover:text-[#7B4F1D]"
+            >
+              ↻ Refresh Data
+            </button>
+          </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-              <p className="text-red-600">{error}</p>
+            <div className="mb-6 p-4 bg-red-100 border-l-4 border-red-500 rounded-lg animate-pulse">
+              <p className="text-red-700 font-medium">{error}</p>
             </div>
           )}
 
@@ -79,36 +92,36 @@ export default function StudentDashboard() {
             ].map((stat, idx) => (
               <div
                 key={idx}
-                className={`bg-gradient-to-br ${stat.color} to-opacity-80 rounded-2xl p-6 text-white shadow-lg`}
+                className={`bg-gradient-to-br ${stat.color} to-black/20 rounded-2xl p-6 text-white shadow-lg transition-transform hover:scale-[1.02]`}
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold opacity-80 mb-2">{stat.label}</p>
                     <p className="text-4xl font-bold">{stat.value}</p>
                   </div>
-                  <div className="text-5xl opacity-50">{stat.icon}</div>
+                  <div className="text-5xl opacity-30">{stat.icon}</div>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Quick Navigation */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg">
+          <div className="bg-white rounded-2xl p-8 shadow-xl border border-[#EADCC8]">
             <h2 className="text-2xl font-bold text-[#7B4F1D] mb-6">Quick Actions</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { label: 'View Drives', icon: '📋', action: () => navigate('/student/drives') },
                 { label: 'My Applications', icon: '📝', action: () => navigate('/student/applications') },
                 { label: 'My Profile', icon: '👤', action: () => navigate('/student/profile') },
-                { label: '� Show Resume', icon: '', action: handleShowResume },
+                { label: 'Show Resume', icon: '📄', action: handleShowResume },
               ].map((action, idx) => (
                 <button
                   key={idx}
                   onClick={action.action}
-                  className="p-4 rounded-xl text-center font-semibold transition-all bg-[#F8EFE2] text-[#7B4F1D] hover:bg-[#B08B5E] hover:text-white"
+                  className="p-6 rounded-xl text-center font-bold transition-all bg-[#F8EFE2] text-[#7B4F1D] hover:bg-[#7B4F1D] hover:text-white shadow-sm hover:shadow-md"
                 >
-                  <div className="text-2xl mb-2">{action.icon || ''}</div>
-                  <div>{action.label}</div>
+                  <div className="text-3xl mb-3">{action.icon}</div>
+                  <div className="text-sm uppercase tracking-wider">{action.label}</div>
                 </button>
               ))}
             </div>
@@ -116,42 +129,39 @@ export default function StudentDashboard() {
 
           {/* Resume Modal */}
           {showResumeModal && (
-            <div className="fixed inset-0 bg-white flex flex-col z-50 font-[Montserrat]">
-              {/* Modal Header */}
-              <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-white">
-                <h2 className="text-2xl font-bold text-[#7B4F1D]">My Resume</h2>
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex flex-col z-50 animate-in fade-in duration-300">
+              <div className="flex justify-between items-center p-5 bg-white border-b border-gray-200">
+                <h2 className="text-2xl font-bold text-[#7B4F1D]">Professional Resume</h2>
                 <button
                   onClick={() => setShowResumeModal(false)}
-                  className="text-gray-600 hover:text-gray-900 text-4xl font-light leading-none"
+                  className="text-gray-400 hover:text-red-500 text-3xl transition-colors"
                 >
-                  ×
+                  ✕
                 </button>
               </div>
 
-              {/* Modal Body - PDF Viewer (Full Screen) */}
-              <div className="flex-1 overflow-hidden w-full">
+              <div className="flex-1 bg-gray-100 overflow-hidden">
                 <iframe
-                  src={`${resumeUrl}#toolbar=1&navpanes=0&scrollbar=1`}
+                  src={`${resumeUrl}#toolbar=1`}
                   className="w-full h-full border-0"
-                  title="Resume"
+                  title="Resume Viewer"
                 />
               </div>
 
-              {/* Modal Footer */}
-              <div className="flex gap-4 p-6 border-t border-gray-200 bg-gray-50">
+              <div className="flex gap-4 p-5 bg-white border-t border-gray-200">
                 <a
                   href={resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 text-center px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all font-semibold"
+                  className="flex-1 text-center px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all font-bold shadow-lg"
                 >
-                  📥 Download Resume
+                  📥 Download Copy
                 </a>
                 <button
                   onClick={() => setShowResumeModal(false)}
-                  className="flex-1 px-6 py-3 bg-[#F8EFE2] text-[#7B4F1D] rounded-xl hover:bg-[#B08B5E] hover:text-white transition-all font-semibold"
+                  className="flex-1 px-6 py-3 bg-[#F8EFE2] text-[#7B4F1D] rounded-xl hover:bg-[#B08B5E] hover:text-white transition-all font-bold"
                 >
-                  Close
+                  Close Preview
                 </button>
               </div>
             </div>
