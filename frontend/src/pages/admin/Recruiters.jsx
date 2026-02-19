@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AdminLayout from '../../layouts/AdminLayout';
 import axiosInstance from '../../services/axiosInstance';
 import Loader from '../../components/common/Loader';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function Recruiters() {
+  const authContextValue = useContext(AuthContext);
+  const user = authContextValue?.user;
+  const isAdmin = user?.role === 'admin';
   const [recruiters, setRecruiters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -36,6 +40,7 @@ export default function Recruiters() {
     e.preventDefault();
     setError('');
 
+    if (!isAdmin) return setError('Only admin can create recruiters');
     if (!formData.name.trim()) return setError('Name is required');
     if (!formData.email.trim()) return setError('Email is required');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
@@ -60,6 +65,27 @@ export default function Recruiters() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleDeleteRecruiter = async (recruiter) => {
+    if (!isAdmin) return setError('Only admin can delete recruiters');
+
+    const confirmation = window.prompt(
+      `To delete recruiter "${recruiter.name}", type DELETE`
+    );
+
+    if (confirmation === null) return;
+    if (confirmation.trim().toUpperCase() !== 'DELETE') {
+      return setError('Delete cancelled: please type DELETE to confirm');
+    }
+
+    try {
+      await axiosInstance.delete(`/students/recruiters/${recruiter._id}`);
+      setError('');
+      fetchRecruiters();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to delete recruiter');
+    }
   };
 
   const filteredRecruiters = recruiters.filter((recruiter) =>
@@ -190,6 +216,7 @@ export default function Recruiters() {
                     <th className="px-6 py-4 text-left font-bold">Email</th>
                     <th className="px-6 py-4 text-left font-bold">Status</th>
                     <th className="px-6 py-4 text-left font-bold">Joined</th>
+                    <th className="px-6 py-4 text-left font-bold">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -210,11 +237,23 @@ export default function Recruiters() {
                         <td className="px-6 py-4 text-gray-500 text-sm">
                           {new Date(recruiter.createdAt).toLocaleDateString(undefined, { dateStyle: 'medium' })}
                         </td>
+                        <td className="px-6 py-4">
+                          {isAdmin ? (
+                            <button
+                              onClick={() => handleDeleteRecruiter(recruiter)}
+                              className="px-4 py-2 bg-red-50 text-red-600 font-bold rounded-lg hover:bg-red-600 hover:text-white transition-all"
+                            >
+                              Delete
+                            </button>
+                          ) : (
+                            <span className="text-gray-400 text-sm">-</span>
+                          )}
+                        </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="4" className="px-6 py-12 text-center text-gray-400 font-medium italic">
+                      <td colSpan="5" className="px-6 py-12 text-center text-gray-400 font-medium italic">
                         No recruiters found.
                       </td>
                     </tr>
@@ -245,6 +284,14 @@ export default function Recruiters() {
                         {new Date(recruiter.createdAt).toLocaleDateString()}
                       </span>
                     </div>
+                    {isAdmin && (
+                      <button
+                        onClick={() => handleDeleteRecruiter(recruiter)}
+                        className="mt-2 w-full px-4 py-2 bg-red-50 text-red-600 font-bold rounded-lg hover:bg-red-600 hover:text-white transition-all"
+                      >
+                        Delete Recruiter
+                      </button>
+                    )}
                   </div>
                 ))
               ) : (

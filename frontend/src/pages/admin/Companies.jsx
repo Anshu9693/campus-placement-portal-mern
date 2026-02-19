@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../layouts/AdminLayout';
 import axiosInstance from '../../services/axiosInstance';
 import Loader from '../../components/common/Loader';
+import { Link } from 'react-router-dom';
 
 export default function Companies() {
   const [companies, setCompanies] = useState([]);
@@ -126,15 +127,33 @@ export default function Companies() {
           
           {/* HEADER SECTION */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold text-[#7B4F1D]">
-              Companies
-            </h1>
-            <button
-              onClick={() => setShowForm(!showForm)}
-              className="w-full sm:w-auto px-6 py-3 bg-[#B08B5E] text-white rounded-xl hover:bg-[#7B4F1D] transition-all font-bold shadow-md active:scale-95"
-            >
-              {showForm ? '✕ Cancel' : '+ Add Company'}
-            </button>
+            
+            <div>
+              <h1 className="text-4xl font-black text-[#7B4F1D]">
+                Companies
+              </h1>
+              <p className="text-[#B08B5E] font-medium">
+                Manage partner companies & recruiters
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+
+              {/* ⭐ NEW BUTTON */}
+              <Link
+                to="/admin/recruiters"
+                className="px-6 py-3 bg-white text-[#7B4F1D] rounded-2xl border border-[#B08B5E] hover:bg-[#F3E4D0] font-bold shadow-sm text-center"
+              >
+                Manage Recruiters
+              </Link>
+
+              <button
+                onClick={() => setShowForm(!showForm)}
+                className="px-8 py-3 bg-[#B08B5E] text-white rounded-2xl hover:bg-[#7B4F1D] font-bold shadow-lg"
+              >
+                {showForm ? "✕ Cancel" : "+ Add Company"}
+              </button>
+            </div>
           </div>
 
           {error && (
@@ -318,7 +337,7 @@ export default function Companies() {
                           <option value="">Choose Recruiter...</option>
                           {recruiters.map((recruiter) => (
                             <option key={recruiter._id} value={recruiter._id}>
-                              {recruiter.name}
+                              {recruiter.name}{recruiter.email ? ` (${recruiter.email})` : ''}
                             </option>
                           ))}
                         </select>

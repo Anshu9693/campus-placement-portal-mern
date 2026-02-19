@@ -1,4 +1,6 @@
 import Company from "../models/Company.model.js";
+import Drive from "../models/Drive.model.js";
+import Application from "../models/Application.model.js";
 import { asyncHandler } from "../middleware/async.middleware.js";
 
 export const createCompany = asyncHandler(async (req, res) => {
@@ -29,8 +31,27 @@ export const updateCompany = asyncHandler(async (req, res) => {
 });
 
 export const deleteCompany = asyncHandler(async (req, res) => {
-  await Company.findByIdAndDelete(req.params.id);
-  res.json({ success: true });
+  const { id } = req.params;
+
+  const company = await Company.findById(id);
+  if (!company) {
+    return res.status(404).json({ message: "Company not found" });
+  }
+
+  // Delete all drives linked to this company
+  const drives = await Drive.find({ company: id }).select("_id");
+  const driveIds = drives.map((drive) => drive._id);
+
+  if (driveIds.length) {
+    await Application.deleteMany({ drive: { $in: driveIds } });
+    await Drive.deleteMany({ _id: { $in: driveIds } });
+  }
+
+  // Cleanup any remaining company-linked applications and delete company
+  await Application.deleteMany({ company: id });
+  await Company.findByIdAndDelete(id);
+
+  res.json({ success: true, message: "Company and related drives deleted" });
 });
 
 export const assignRecruiter = asyncHandler(async (req, res) => {

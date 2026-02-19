@@ -59,7 +59,18 @@ export default function StudentDrives() {
       );
 
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to apply');
+      const message = err.response?.data?.message || 'Failed to apply';
+      setError(message);
+
+      if (
+        message.includes(
+          'Please complete your profile with phone, course, college, and resume before applying'
+        )
+      ) {
+        window.alert(
+          'Profile incomplete: please add phone, course, college, and resume in My Profile before applying.'
+        );
+      }
     }
   };
 
@@ -109,7 +120,7 @@ export default function StudentDrives() {
                       </div>
 
                       <p className="text-[#B08B5E] font-semibold mb-2">
-                        {drive.company?.name}
+                        Company: {drive.company?.name || 'Not specified'}
                       </p>
 
                       <p className="text-gray-700 mb-3">
@@ -117,6 +128,10 @@ export default function StudentDrives() {
                       </p>
 
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
+                        <div>
+                          <p className="text-[#B08B5E] font-bold">Company</p>
+                          <p className="text-gray-700">{drive.company?.name || 'Not specified'}</p>
+                        </div>
                         <div>
                           <p className="text-[#B08B5E] font-bold">Location</p>
                           <p className="text-gray-700">{drive.location}</p>

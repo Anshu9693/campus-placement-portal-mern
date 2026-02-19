@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../layouts/AdminLayout';
 import axiosInstance from '../../services/axiosInstance';
 import Loader from '../../components/common/Loader';
+import { Link } from 'react-router-dom';
 
 export default function Drives() {
   const [drives, setDrives] = useState([]);
@@ -26,6 +27,7 @@ export default function Drives() {
   useEffect(() => {
     fetchDrives();
     fetchCompanies();
+
     const savedScrollPosition = sessionStorage.getItem('drivesScrollPosition');
     if (savedScrollPosition) {
       window.scrollTo(0, parseInt(savedScrollPosition, 10));
@@ -132,19 +134,27 @@ export default function Drives() {
     <AdminLayout>
       <div className="bg-[#F8EFE2] min-h-screen p-4 sm:p-8 font-[Montserrat]">
         <div className="max-w-7xl mx-auto">
-          
-          {/* Header Section */}
+
+          {/* Header */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
               <h1 className="text-3xl sm:text-4xl font-black text-[#7B4F1D]">Placement Drives</h1>
               <p className="text-[#B08B5E] font-medium">Manage and monitor active recruitment cycles</p>
             </div>
-            <button
-              onClick={() => { resetForm(); setShowForm(true); }}
-              className="w-full sm:w-auto px-8 py-3 bg-[#B08B5E] text-white rounded-2xl hover:bg-[#7B4F1D] transition-all font-bold shadow-lg flex items-center justify-center gap-2"
-            >
-              <span className="text-xl">+</span> Add New Drive
-            </button>
+            <div className="w-full sm:w-auto flex flex-col sm:flex-row gap-3">
+              <Link
+                to="/admin/recruiters"
+                className="w-full sm:w-auto px-6 py-3 bg-white text-[#7B4F1D] rounded-2xl border border-[#B08B5E] hover:bg-[#F3E4D0] transition-all font-bold shadow-sm flex items-center justify-center"
+              >
+                Manage Recruiters
+              </Link>
+              <button
+                onClick={() => { resetForm(); setShowForm(true); }}
+                className="w-full sm:w-auto px-8 py-3 bg-[#B08B5E] text-white rounded-2xl hover:bg-[#7B4F1D] transition-all font-bold shadow-lg flex items-center justify-center gap-2"
+              >
+                <span className="text-xl">+</span> Add New Drive
+              </button>
+            </div>
           </div>
 
           {error && (
@@ -154,12 +164,20 @@ export default function Drives() {
             </div>
           )}
 
-          {/* Form Modal */}
+          {/* ===== FIXED MODAL (ABOVE NAVBAR) ===== */}
           {showForm && (
-            <div className="fixed inset-0 bg-[#3d2a15]/60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+
+              {/* Backdrop */}
+              <div
+                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                onClick={resetForm}
+              />
+
+              {/* Modal */}
               <form
                 onSubmit={handleCreateOrUpdateDrive}
-                className="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative animate-in fade-in zoom-in duration-200"
+                className="relative bg-white rounded-3xl p-6 sm:p-8 shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200"
               >
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-black text-[#7B4F1D]">
@@ -167,18 +185,20 @@ export default function Drives() {
                   </h2>
                   <button type="button" onClick={resetForm} className="text-gray-400 hover:text-red-500 text-xl">✕</button>
                 </div>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
                   <div className="flex flex-col gap-1">
                     <label className="text-xs font-bold text-[#7B4F1D] uppercase ml-1">Company</label>
                     <select
                       value={formData.company}
-                      onChange={(e) => setFormData({...formData, company: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                       required
                       className="px-4 py-3 bg-[#F8EFE2]/50 border border-[#B08B5E]/30 rounded-xl outline-none focus:ring-2 focus:ring-[#B08B5E]"
                     >
                       <option value="">Select Company</option>
-                      {companies.map((c) => <option key={c._id} value={c._id}>{c.name}</option>)}
+                      {companies.map((c) => (
+                        <option key={c._id} value={c._id}>{c.name}</option>
+                      ))}
                     </select>
                   </div>
 
@@ -188,7 +208,7 @@ export default function Drives() {
                       type="text"
                       placeholder="e.g. Software Engineer"
                       value={formData.jobRole}
-                      onChange={(e) => setFormData({...formData, jobRole: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, jobRole: e.target.value })}
                       required
                       className="px-4 py-3 bg-[#F8EFE2]/50 border border-[#B08B5E]/30 rounded-xl outline-none focus:ring-2 focus:ring-[#B08B5E]"
                     />
@@ -200,7 +220,7 @@ export default function Drives() {
                       type="text"
                       placeholder="Remote / Bangalore"
                       value={formData.location}
-                      onChange={(e) => setFormData({...formData, location: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                       className="px-4 py-3 bg-[#F8EFE2]/50 border border-[#B08B5E]/30 rounded-xl outline-none focus:ring-2 focus:ring-[#B08B5E]"
                     />
                   </div>
@@ -211,7 +231,7 @@ export default function Drives() {
                       type="text"
                       placeholder="e.g. 12 LPA"
                       value={formData.package}
-                      onChange={(e) => setFormData({...formData, package: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, package: e.target.value })}
                       className="px-4 py-3 bg-[#F8EFE2]/50 border border-[#B08B5E]/30 rounded-xl outline-none focus:ring-2 focus:ring-[#B08B5E]"
                     />
                   </div>
@@ -221,7 +241,7 @@ export default function Drives() {
                     <input
                       type="date"
                       value={formData.deadline}
-                      onChange={(e) => setFormData({...formData, deadline: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
                       required
                       className="px-4 py-3 bg-[#F8EFE2]/50 border border-[#B08B5E]/30 rounded-xl outline-none focus:ring-2 focus:ring-[#B08B5E]"
                     />
@@ -232,7 +252,7 @@ export default function Drives() {
                     <input
                       type="number"
                       value={formData.vacancies}
-                      onChange={(e) => setFormData({...formData, vacancies: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, vacancies: e.target.value })}
                       className="px-4 py-3 bg-[#F8EFE2]/50 border border-[#B08B5E]/30 rounded-xl outline-none focus:ring-2 focus:ring-[#B08B5E]"
                     />
                   </div>
@@ -243,7 +263,7 @@ export default function Drives() {
                   <textarea
                     rows={3}
                     value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     required
                     className="px-4 py-3 bg-[#F8EFE2]/50 border border-[#B08B5E]/30 rounded-xl outline-none focus:ring-2 focus:ring-[#B08B5E]"
                   />
@@ -254,7 +274,7 @@ export default function Drives() {
                   <textarea
                     rows={2}
                     value={formData.qualification}
-                    onChange={(e) => setFormData({...formData, qualification: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, qualification: e.target.value })}
                     required
                     className="px-4 py-3 bg-[#F8EFE2]/50 border border-[#B08B5E]/30 rounded-xl outline-none focus:ring-2 focus:ring-[#B08B5E]"
                   />
@@ -270,9 +290,9 @@ export default function Drives() {
             </div>
           )}
 
-          {/* Search Bar */}
+          {/* Search */}
           <div className="relative mb-8 group">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl group-focus-within:scale-110 transition-transform">🔍</span>
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl">🔍</span>
             <input
               type="text"
               placeholder="Filter by job role or company name..."
@@ -296,51 +316,35 @@ export default function Drives() {
                     <div className="flex-1 w-full">
                       <div className="flex flex-wrap items-center gap-3 mb-2">
                         <h3 className="text-2xl font-black text-[#7B4F1D]">{drive.jobRole}</h3>
-                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${drive.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase ${drive.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                           {drive.isActive ? 'Live' : 'Inactive'}
                         </span>
                       </div>
                       <p className="text-lg font-bold text-[#B08B5E] mb-4">{drive.company?.name}</p>
-                      
+
                       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                        <div className="bg-[#F8EFE2]/50 p-3 rounded-2xl">
-                          <p className="text-[10px] uppercase font-bold text-[#7B4F1D]/60 mb-1">📍 Location</p>
-                          <p className="font-bold text-gray-700 truncate">{drive.location || 'Not Specified'}</p>
-                        </div>
-                        <div className="bg-[#F8EFE2]/50 p-3 rounded-2xl">
-                          <p className="text-[10px] uppercase font-bold text-[#7B4F1D]/60 mb-1">💼 Package</p>
-                          <p className="font-bold text-gray-700">{drive.package || 'N/A'}</p>
-                        </div>
-                        <div className="bg-[#F8EFE2]/50 p-3 rounded-2xl">
-                          <p className="text-[10px] uppercase font-bold text-[#7B4F1D]/60 mb-1">👥 Vacancies</p>
-                          <p className="font-bold text-gray-700">{drive.vacancies || '0'}</p>
-                        </div>
-                        <div className="bg-[#F8EFE2]/50 p-3 rounded-2xl">
-                          <p className="text-[10px] uppercase font-bold text-[#7B4F1D]/60 mb-1">⏰ Deadline</p>
-                          <p className="font-bold text-gray-700">{new Date(drive.deadline).toLocaleDateString()}</p>
-                        </div>
+                        <Info label="📍 Location" value={drive.location || 'Not Specified'} />
+                        <Info label="💼 Package" value={drive.package || 'N/A'} />
+                        <Info label="👥 Vacancies" value={drive.vacancies || '0'} />
+                        <Info label="⏰ Deadline" value={new Date(drive.deadline).toLocaleDateString()} />
                       </div>
 
                       <div className="border-t border-gray-100 pt-6 flex flex-wrap gap-3">
                         <button
                           onClick={() => handleToggleDrive(drive._id, drive.isActive)}
-                          className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl font-bold transition-all ${
-                            drive.isActive 
-                              ? 'bg-green-600 text-white hover:bg-green-700' 
-                              : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-                          }`}
+                          className={`px-6 py-2.5 rounded-xl font-bold ${drive.isActive ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'}`}
                         >
                           {drive.isActive ? '✓ Active' : '○ Disabled'}
                         </button>
                         <button
                           onClick={() => handleEditDrive(drive)}
-                          className="flex-1 sm:flex-none px-6 py-2.5 bg-blue-50 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white transition-all"
+                          className="px-6 py-2.5 bg-blue-50 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDeleteDrive(drive._id)}
-                          className="flex-1 sm:flex-none px-6 py-2.5 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-600 hover:text-white transition-all"
+                          className="px-6 py-2.5 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-600 hover:text-white"
                         >
                           Delete
                         </button>
@@ -350,7 +354,7 @@ export default function Drives() {
                 ))
               ) : (
                 <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-[#EADCC8]">
-                  <p className="text-gray-400 text-xl font-medium italic">No placement drives found matching your search.</p>
+                  <p className="text-gray-400 text-xl font-medium italic">No placement drives found.</p>
                 </div>
               )}
             </div>
@@ -358,5 +362,14 @@ export default function Drives() {
         </div>
       </div>
     </AdminLayout>
+  );
+}
+
+function Info({ label, value }) {
+  return (
+    <div className="bg-[#F8EFE2]/50 p-3 rounded-2xl">
+      <p className="text-[10px] uppercase font-bold text-[#7B4F1D]/60 mb-1">{label}</p>
+      <p className="font-bold text-gray-700 truncate">{value}</p>
+    </div>
   );
 }

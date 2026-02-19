@@ -7,6 +7,7 @@ import {
   deleteDrive,
   getCompanyDrives,
   getRecruiterDrives,
+  getRecruiterCompanies,
 } from "../controllers/drive.controller.js";
 
 import { protect } from "../middleware/auth.middleware.js";
@@ -20,6 +21,14 @@ router.get(
   protect,
   authorizeRoles("recruiter"),
   getRecruiterDrives
+);
+
+// Recruiter - get assigned companies
+router.get(
+  "/my/companies",
+  protect,
+  authorizeRoles("recruiter"),
+  getRecruiterCompanies
 );
 
 // Recruiter - get company drives by companyId (MUST be before /:id route)

@@ -38,6 +38,7 @@ router.get(
 // Admin only - Delete a recruiter
 router.delete(
   "/recruiters/:id",
+  protect,
   authorizeRoles("admin"),
   deleteRecruiter
 );

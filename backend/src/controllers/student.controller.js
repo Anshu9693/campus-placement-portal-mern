@@ -2,19 +2,53 @@ import StudentProfile from "../models/StudentProfile.model.js";
 import Drive from "../models/Drive.model.js";
 import Application from "../models/Application.model.js";
 import User from "../models/User.model.js";
+import Company from "../models/Company.model.js";
 import { asyncHandler } from "../middleware/async.middleware.js";
 
 // Get Profile
 export const getProfile = asyncHandler(async (req, res) => {
-  const profile = await StudentProfile.findOne({ user: req.user._id });
-  res.json(profile);
+  const profile = await StudentProfile.findOne({ user: req.user._id }).populate(
+    "user",
+    "email name"
+  );
+
+  if (!profile) {
+    return res.status(404).json({ message: "Profile not found" });
+  }
+
+  const profileObj = profile.toObject();
+  const { user, ...safeProfile } = profileObj;
+  res.json({
+    ...safeProfile,
+    email: user?.email || "",
+    name: user?.name || "",
+  });
 });
 
 // Update Profile
 export const updateProfile = asyncHandler(async (req, res) => {
+  const allowedFields = [
+    "phone",
+    "rollNumber",
+    "registrationId",
+    "course",
+    "college",
+    "year",
+    "skills",
+    "image",
+    "resume",
+  ];
+
+  const updates = {};
+  for (const field of allowedFields) {
+    if (req.body[field] !== undefined) {
+      updates[field] = req.body[field];
+    }
+  }
+
   const updated = await StudentProfile.findOneAndUpdate(
     { user: req.user._id },
-    req.body,
+    updates,
     { new: true }
   );
   res.json(updated);
@@ -173,20 +207,20 @@ export const updateStudentStatus = asyncHandler(async (req, res) => {
 });
 
 // Delete Recruiter
-export const deleteRecruiter = async (req, res) => {
-  try {
-    const { id } = req.params;
+export const deleteRecruiter = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-    // Find and delete the recruiter by ID
-    const deletedRecruiter = await Recruiter.findByIdAndDelete(id);
-
-    if (!deletedRecruiter) {
-      return res.status(404).json({ message: "Recruiter not found" });
-    }
-
-    res.status(200).json({ message: "Recruiter deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting recruiter:", error);
-    res.status(500).json({ message: "Failed to delete recruiter" });
+  const recruiter = await User.findById(id);
+  if (!recruiter || recruiter.role !== "recruiter") {
+    return res.status(404).json({ message: "Recruiter not found" });
   }
-};
+
+  // Cleanup recruiter references from companies before deleting user
+  await Company.updateMany(
+    { recruiters: recruiter._id },
+    { $pull: { recruiters: recruiter._id } }
+  );
+
+  await User.findByIdAndDelete(id);
+  res.status(200).json({ message: "Recruiter deleted successfully" });
+});

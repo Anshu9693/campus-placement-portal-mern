@@ -152,6 +152,7 @@ export default function AdminDashboard() {
                 { label: 'Placement Drives', path: '/admin/drives', icon: '🚀', desc: 'Create and track jobs' },
                 { label: 'Student Applications', path: '/admin/applications', icon: '👁️', desc: 'Update hiring status' },
                 { label: 'Company Directory', path: '/admin/companies', icon: '🤝', desc: 'Manage partners' },
+                // { label: 'Recruiters', path: '/admin/recruiters', icon: '🧑‍💼', desc: 'Create and manage recruiters' },
               ].map((link, idx) => (
                 <Link
                   key={idx}

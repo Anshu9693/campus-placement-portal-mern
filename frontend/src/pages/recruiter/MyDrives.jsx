@@ -6,11 +6,13 @@ import Loader from '../../components/common/Loader';
 
 export default function MyDrives() {
   const [drives, setDrives] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
+    company: '',
     jobRole: '',
     description: '',
     qualification: '',
@@ -22,8 +24,19 @@ export default function MyDrives() {
   });
 
   useEffect(() => {
-    fetchMyDrives();
+    initPageData();
   }, []);
+
+  const getDefaultCompany = (list) => (list.length === 1 ? list[0]._id : '');
+
+  const initPageData = async () => {
+    setLoading(true);
+    try {
+      await Promise.all([fetchMyDrives(), fetchMyCompanies()]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchMyDrives = async () => {
     try {
@@ -32,9 +45,23 @@ export default function MyDrives() {
       setError('');
     } catch (err) {
       console.error('Error loading drives:', err);
-      setError('Failed to load drives');
-    } finally {
-      setLoading(false);
+      setError('No drives assigned to your account yet ');
+    }
+  };
+
+  const fetchMyCompanies = async () => {
+    try {
+      const res = await axiosInstance.get('/drives/my/companies');
+      const recruiterCompanies = res.data || [];
+      setCompanies(recruiterCompanies);
+
+      setFormData((prev) => ({
+        ...prev,
+        company: prev.company || getDefaultCompany(recruiterCompanies),
+      }));
+    } catch (err) {
+      console.error('Error loading companies:', err);
+      setError(err.response?.data?.message || 'Failed to load assigned companies');
     }
   };
 
@@ -44,6 +71,10 @@ export default function MyDrives() {
     // Validate required fields
     if (!formData.jobRole.trim() || !formData.description.trim() || !formData.qualification.trim() || !formData.deadline) {
       setError('Please fill in all required fields');
+      return;
+    }
+    if (!formData.company) {
+      setError('Please select a company');
       return;
     }
 
@@ -64,6 +95,7 @@ export default function MyDrives() {
       }
 
       setFormData({
+        company: getDefaultCompany(companies),
         jobRole: '',
         description: '',
         qualification: '',
@@ -85,6 +117,7 @@ export default function MyDrives() {
 
   const handleEditDrive = (drive) => {
     setFormData({
+      company: drive.company?._id || drive.company || getDefaultCompany(companies),
       jobRole: drive.jobRole,
       description: drive.description,
       qualification: drive.qualification,
@@ -92,7 +125,7 @@ export default function MyDrives() {
       location: drive.location,
       package: drive.package,
       deadline: drive.deadline?.split('T')[0], // Format date for input
-      rounds: drive.rounds || 1,
+      rounds: Array.isArray(drive.rounds) ? drive.rounds.length : (drive.rounds || 1),
     });
     setEditingId(drive._id);
     setShowForm(true);
@@ -123,6 +156,7 @@ export default function MyDrives() {
                 setShowForm(!showForm);
                 setEditingId(null);
                 setFormData({
+                  company: getDefaultCompany(companies),
                   jobRole: '',
                   description: '',
                   qualification: '',
@@ -151,8 +185,26 @@ export default function MyDrives() {
               <h2 className="text-2xl font-bold text-[#7B4F1D] mb-4">
                 {editingId ? 'Edit Drive' : 'Create New Drive'}
               </h2>
+              {companies.length === 0 && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+                  No company is assigned to your account yet. Contact admin to assign at least one company.
+                </div>
+              )}
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <select
+                  value={formData.company}
+                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                  required
+                  className="px-4 py-3 border border-[#B08B5E] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B08B5E]"
+                >
+                  <option value="">Select Company *</option>
+                  {companies.map((company) => (
+                    <option key={company._id} value={company._id}>
+                      {company.name}
+                    </option>
+                  ))}
+                </select>
                 <input
                   type="text"
                   placeholder="Job Role *"
@@ -219,7 +271,8 @@ export default function MyDrives() {
 
               <button
                 type="submit"
-                className="px-6 py-3 bg-[#B08B5E] text-white rounded-xl hover:bg-[#7B4F1D] transition-all font-bold"
+                disabled={companies.length === 0}
+                className="px-6 py-3 bg-[#B08B5E] text-white rounded-xl hover:bg-[#7B4F1D] transition-all font-bold disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {editingId ? 'Update Drive' : 'Create Drive'}
               </button>
@@ -236,6 +289,7 @@ export default function MyDrives() {
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                       <div className="flex-1">
                         <h3 className="text-2xl font-bold text-[#7B4F1D] mb-2">{drive.jobRole}</h3>
+                        <p className="text-[#B08B5E] font-semibold mb-2">{drive.company?.name || '-'}</p>
                         <p className="text-gray-700 mb-4">{drive.description}</p>
                         
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">

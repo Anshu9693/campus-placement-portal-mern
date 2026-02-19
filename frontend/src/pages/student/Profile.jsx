@@ -5,6 +5,7 @@ import Loader from '../../components/common/Loader';
 
 export default function StudentProfile() {
   const [profile, setProfile] = useState({
+    email: '',
     image: { url: '', fileId: '' },
     phone: '',
     rollNumber: '',
@@ -195,6 +196,11 @@ export default function StudentProfile() {
               {/* Responsive Grid for Details */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
                 <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-[#B08B5E]">
+                  <p className="text-[#B08B5E] font-bold text-xs uppercase tracking-wider mb-1">Email</p>
+                  <p className="text-gray-700 text-base md:text-lg break-all">{profile.email || 'Not provided'}</p>
+                </div>
+
+                <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-[#B08B5E]">
                   <p className="text-[#B08B5E] font-bold text-xs uppercase tracking-wider mb-1">Phone</p>
                   <p className="text-gray-700 text-base md:text-lg break-all">{profile.phone || 'Not provided'}</p>
                 </div>
@@ -311,6 +317,19 @@ export default function StudentProfile() {
 
               {/* Responsive Form Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="block text-sm font-bold text-[#7B4F1D]">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={profile.email || ''}
+                    readOnly
+                    disabled
+                    className="w-full px-4 py-3 border-2 border-[#B08B5E]/20 rounded-xl bg-gray-100 text-gray-600 cursor-not-allowed"
+                    placeholder="Email"
+                  />
+                </div>
+
                 <div className="space-y-2">
                   <label className="block text-sm font-bold text-[#7B4F1D]">Phone Number</label>
                   <input
