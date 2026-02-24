@@ -92,7 +92,7 @@ export default function AdminDashboard() {
             {/* Functional Funnel Card */}
             <div className="lg:col-span-2 bg-white rounded-3xl p-8 shadow-sm border border-[#EADCC8]/50">
               <div className="flex justify-between items-center mb-10">
-                <h2 className="text-2xl font-black text-[#7B4F1D]">Placement Progress</h2>
+                <h2 className="text-xl font-black text-[#7B4F1D]">Placement Progress</h2>
                 <div className="text-right">
                   <p className="text-[10px] font-black text-[#B08B5E] uppercase">Success Rate</p>
                   <p className="text-xl font-black text-green-600">{stats.totalApplications > 0 ? selectionRate : 0}%</p>
