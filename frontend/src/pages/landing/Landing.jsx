@@ -6,46 +6,46 @@ export default function Landing() {
   return (
     <div className="min-h-screen flex flex-col font-[Montserrat] bg-[#F8EFE2] text-[#4A2C14]">
       {/* Sticky Header */}
-       <header className="w-full bg-[#5A371F] text-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-
-        {/* Logo + Brand */}
-        <Link to="/" className="flex items-center gap-3">
-          <img
-            src="/image.png"
-            alt="Avani Enterprises Logo"
-            className="w-10 h-10 rounded-full object-cover"
-          />
-          <span className="text-lg sm:text-xl font-bold tracking-wide">
-            AVANI <span className="text-[#B08B5E]">ENTERPRISES</span>
-          </span>
-        </Link>
-
-        {/* Navigation */}
-        <nav className="flex items-center gap-4 sm:gap-6">
-          <Link
-            to="/login"
-            className="text-sm font-semibold uppercase tracking-wide hover:text-[#B08B5E] transition"
-          >
-            Login
+      <header className="w-full bg-[#5A371F] text-white shadow-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between">
+          
+          {/* Logo + Brand */}
+          <Link to="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <img
+              src="/image.png"
+              alt="Avani Enterprises Logo"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border border-[#B08B5E]/30"
+            />
+            <span className="text-sm sm:text-xl font-bold tracking-wide whitespace-nowrap">
+              AVANI <span className="text-[#B08B5E]">ENTERPRISES</span>
+            </span>
           </Link>
 
-          <Link
-            to="/register"
-            className="bg-white text-[#5A371F] px-4 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider hover:bg-[#B08B5E] hover:text-white transition-all duration-300"
-          >
-            Join Portal
-          </Link>
-        </nav>
-      </div>
-    </header>
+          {/* Navigation */}
+          <nav className="flex items-center gap-3 sm:gap-6">
+            <Link
+              to="/login"
+              className="text-[10px] sm:text-sm font-semibold uppercase tracking-wide hover:text-[#B08B5E] transition"
+            >
+              Login
+            </Link>
+
+            <Link
+              to="/register"
+              className="bg-[#FFFBF5] text-[#5A371F] px-3 sm:px-6 py-2 rounded-full text-[10px] sm:text-sm font-semibold uppercase tracking-wider hover:bg-[#B08B5E] hover:text-white transition-all duration-300 whitespace-nowrap"
+            >
+              Join Portal
+            </Link>
+          </nav>
+        </div>
+      </header>
 
       {/* Hero Section */}
-      <main className="relative flex-1 flex flex-col items-center justify-center text-center px-6 py-20 lg:py-32 overflow-hidden">
+      <main className="relative flex-1 flex flex-col items-center justify-start text-center px-4 sm:px-6 pt-12 pb-20 lg:pt-20 lg:pb-32 overflow-hidden">
         {/* Background Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#B08B5E]/10 rounded-full blur-[120px] -z-10"></div>
         
-        <div className="inline-block px-4 py-1.5 mb-8 rounded-full bg-[#B08B5E]/10 border border-[#B08B5E]/20">
+        <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-[#B08B5E]/15 border border-[#B08B5E]/30">
           <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#7B4F1D]">The Future of Campus Recruitment</p>
         </div>
 
@@ -58,24 +58,25 @@ export default function Landing() {
           A unified ecosystem connecting students, recruiters, and administrators for a seamless, data-driven placement journey.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto">
+        {/* Buttons */}
+        <div className="flex flex-row gap-3 w-full sm:w-auto justify-center items-center">
           <Link
             to="/login"
-            className="px-10 py-5 bg-[#5A371F] text-white rounded-2xl text-xs font-black uppercase tracking-widest shadow-2xl shadow-brown-900/40 hover:bg-[#4A2C14] hover:-translate-y-1 transition-all"
+            className="flex-1 sm:flex-none px-3 sm:px-10 py-4 sm:py-5 bg-[#5A371F] text-white rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest shadow-xl hover:bg-[#4A2C14] hover:-translate-y-1 transition-all text-center"
           >
-            Get Started Now
+            Get Started
           </Link>
           <a
             href="#features"
-            className="px-10 py-5 border-2 border-[#5A371F] text-[#5A371F] rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-[#5A371F] hover:text-white transition-all"
+            className="flex-1 sm:flex-none px-3 sm:px-10 py-4 sm:py-5 border-2 border-[#5A371F] text-[#5A371F] rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-[#5A371F] hover:text-white transition-all text-center"
           >
-            See How It Works
+            How It Works
           </a>
         </div>
       </main>
 
-      {/* Trust Ribbon */}
-      <section className="bg-white py-10 border-y border-[#EADCC8]">
+      {/* Trust Ribbon - Updated from bg-white to bg-[#FFFBF5] */}
+      <section className="bg-[#FFFBF5] py-10 border-y border-[#EADCC8]">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             { label: 'Registered Students', val: '2,500+' },
@@ -92,17 +93,17 @@ export default function Landing() {
       </section>
 
       {/* Roles / Features Section */}
-      <section id="features" className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-20">
+      <section id="features" className="py-12 sm:py-16 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-10">
           <h2 className="text-3xl font-black uppercase tracking-tighter text-[#5A371F]">Tailored For Success</h2>
-          <div className="h-1 w-20 bg-[#B08B5E] mx-auto mt-4"></div>
+          <div className="h-1.5 w-16 bg-[#B08B5E] mx-auto mt-3"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             { 
               role: 'Students', 
-              icon: '👨‍🎓', 
+              icon: '', 
               desc: 'Build a dynamic profile, showcase your technical skills, and apply to top-tier companies with a single click.' 
             },
             { 
@@ -116,8 +117,9 @@ export default function Landing() {
               desc: 'Oversee the entire placement cycle, verify candidate data, and generate deep-dive analytical reports.' 
             }
           ].map((item, i) => (
-            <div key={i} className="bg-white p-10 rounded-[3rem] shadow-sm border border-[#EADCC8] hover:shadow-2xl transition-all group hover:-translate-y-2 duration-500">
-              <div className="text-5xl mb-8 grayscale group-hover:grayscale-0 transition-all">{item.icon}</div>
+            /* Card Color Updated from bg-white to bg-[#FDF8F1] */
+            <div key={i} className="bg-[#FDF8F1] p-10 rounded-[3rem] shadow-sm border border-[#EADCC8] hover:shadow-2xl transition-all group hover:-translate-y-2 duration-500">
+              <div className="text-5xl mb-8 group-hover:scale-110 transition-transform duration-300">{item.icon}</div>
               <h3 className="text-xl font-black text-[#5A371F] mb-4 uppercase tracking-tighter">For {item.role}</h3>
               <p className="text-sm text-[#4A2C14]/60 leading-relaxed font-medium">
                 {item.desc}
@@ -128,7 +130,7 @@ export default function Landing() {
       </section>
 
       {/* Value Proposition */}
-      <section className="bg-[#5A371F] py-24 px-6 text-white overflow-hidden relative">
+      <section className="bg-[#5c371e] py-24 px-6 text-white overflow-hidden relative">
         <div className="absolute right-0 bottom-0 opacity-10 text-[20rem] font-black leading-none select-none translate-y-1/2 translate-x-1/4">
           AVANI
         </div>
@@ -150,10 +152,15 @@ export default function Landing() {
               ))}
             </div>
           </div>
+          {/* Quote Box - using white/5 for transparency over the brown bg */}
           <div className="bg-white/5 p-8 rounded-[3rem] border border-white/10 backdrop-blur-sm">
              <p className="italic text-xl font-medium text-[#B08B5E]">"Our mission is to digitize the campus hiring experience, making it transparent, fast, and accessible for everyone involved."</p>
              <div className="mt-6 flex items-center gap-4">
-                <div className="w-12 h-12 bg-[#B08B5E] rounded-full"></div>
+                <img 
+                  src="/image.png" 
+                  alt="Development Team" 
+                  className="w-12 h-12 rounded-full object-cover border-2 border-[#B08B5E]"
+                />
                 <div>
                   <p className="font-black text-sm uppercase">Development Team</p>
                   <p className="text-[10px] text-white/40 uppercase font-bold tracking-widest">Avani Enterprises</p>

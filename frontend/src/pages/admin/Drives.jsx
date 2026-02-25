@@ -164,17 +164,13 @@ export default function Drives() {
             </div>
           )}
 
-          {/* ===== FIXED MODAL (ABOVE NAVBAR) ===== */}
+          {/* Modal */}
           {showForm && (
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-
-              {/* Backdrop */}
               <div
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm"
                 onClick={resetForm}
               />
-
-              {/* Modal */}
               <form
                 onSubmit={handleCreateOrUpdateDrive}
                 className="relative bg-white rounded-3xl p-6 sm:p-8 shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200"
@@ -290,15 +286,15 @@ export default function Drives() {
             </div>
           )}
 
-          {/* Search */}
+          {/* Search - Fixed placeholder for Mobile */}
           <div className="relative mb-8 group">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl">🔍</span>
             <input
               type="text"
-              placeholder="Filter by job role or company name..."
+              placeholder="Search job or company..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-6 py-4 bg-white border-2 border-[#EADCC8] rounded-2xl focus:border-[#B08B5E] outline-none shadow-sm transition-all text-lg"
+              className="w-full pl-11 pr-4 py-4 bg-white border-2 border-[#EADCC8] rounded-2xl focus:border-[#B08B5E] outline-none shadow-sm transition-all text-sm sm:text-lg"
             />
           </div>
 
@@ -329,22 +325,23 @@ export default function Drives() {
                         <Info label="⏰ Deadline" value={new Date(drive.deadline).toLocaleDateString()} />
                       </div>
 
-                      <div className="border-t border-gray-100 pt-6 flex flex-wrap gap-3">
+                      {/* Action Buttons - One Line on Mobile */}
+                      <div className="border-t border-gray-100 pt-6 flex flex-nowrap gap-2 overflow-x-auto pb-2 no-scrollbar">
                         <button
                           onClick={() => handleToggleDrive(drive._id, drive.isActive)}
-                          className={`px-6 py-2.5 rounded-xl font-bold ${drive.isActive ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'}`}
+                          className={`flex-none px-4 sm:px-6 py-2.5 rounded-xl font-bold text-xs sm:text-sm whitespace-nowrap ${drive.isActive ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'}`}
                         >
                           {drive.isActive ? '✓ Active' : '○ Disabled'}
                         </button>
                         <button
                           onClick={() => handleEditDrive(drive)}
-                          className="px-6 py-2.5 bg-blue-50 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white"
+                          className="flex-none px-6 py-2.5 bg-blue-50 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white text-xs sm:text-sm transition-all"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDeleteDrive(drive._id)}
-                          className="px-6 py-2.5 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-600 hover:text-white"
+                          className="flex-none px-6 py-2.5 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-600 hover:text-white text-xs sm:text-sm transition-all"
                         >
                           Delete
                         </button>
@@ -369,7 +366,7 @@ function Info({ label, value }) {
   return (
     <div className="bg-[#F8EFE2]/50 p-3 rounded-2xl">
       <p className="text-[10px] uppercase font-bold text-[#7B4F1D]/60 mb-1">{label}</p>
-      <p className="font-bold text-gray-700 truncate">{value}</p>
+      <p className="font-bold text-gray-700 truncate text-xs sm:text-base">{value}</p>
     </div>
   );
 }

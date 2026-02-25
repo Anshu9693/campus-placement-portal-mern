@@ -33,7 +33,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // Logic for the funnel - using 1 as fallback to prevent Divide-by-Zero errors
+  // Logic for the funnel
   const denominator = stats.totalApplications || 1;
   const pending = stats.totalApplications - (stats.selected + stats.rejected);
   const selectionRate = ((stats.selected / denominator) * 100).toFixed(1);
@@ -53,7 +53,7 @@ export default function AdminDashboard() {
             </div>
             <button 
               onClick={fetchDashboardStats}
-              className="p-3 bg-white text-[#7B4F1D] rounded-full shadow-sm hover:rotate-180 transition-all duration-500 border border-[#EADCC8]"
+              className="p-3 bg-[#FFFBF5] text-[#7B4F1D] rounded-full shadow-sm hover:rotate-180 transition-all duration-500 border border-[#EADCC8]"
               title="Refresh Data"
             >
               🔄
@@ -66,21 +66,45 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* Core Analytics Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {/* Core Analytics Grid - 2x2 on Mobile, 4 columns on Desktop */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
             {[
-              { label: 'Students', value: stats.totalStudents, icon: '👥', color: 'border-blue-400' },
-              { label: 'Companies', value: stats.totalCompanies, icon: '🏢', color: 'border-purple-400' },
-              { label: 'Live Drives', value: stats.totalDrives, icon: '📋', color: 'border-orange-400' },
-              { label: 'Applications', value: stats.totalApplications, icon: '📝', color: 'border-green-400' },
+              { 
+                label: 'Students', 
+                value: stats.totalStudents, 
+                img: "https://cdn-icons-png.flaticon.com/512/3449/3449692.png", 
+                color: 'border-blue-400' 
+              },
+              { 
+                label: 'Companies', 
+                value: stats.totalCompanies, 
+                img: "https://cdn-icons-png.flaticon.com/512/4300/4300058.png", 
+                color: 'border-purple-400' 
+              },
+              { 
+                label: 'Live Drives', 
+                value: stats.totalDrives, 
+                img: "https://cdn-icons-png.flaticon.com/512/2666/2666505.png", 
+                color: 'border-orange-400' 
+              },
+              { 
+                label: 'Applications', 
+                value: stats.totalApplications, 
+                img: "https://cdn-icons-png.flaticon.com/512/5836/5836611.png", 
+                color: 'border-green-400' 
+              },
             ].map((stat, idx) => (
-              <div key={idx} className={`bg-white rounded-2xl p-6 shadow-sm border-t-4 ${stat.color}`}>
-                <div className="flex items-center justify-between">
+              <div key={idx} className={`bg-[#FDF8F1] rounded-2xl p-4 sm:p-6 shadow-sm border-t-4 ${stat.color} transition-transform hover:scale-[1.02]`}>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                   <div>
-                    <p className="text-[#B08B5E] text-[10px] font-black uppercase tracking-widest">{stat.label}</p>
-                    <p className="text-3xl font-black text-[#7B4F1D]">{stat.value}</p>
+                    <p className="text-[#B08B5E] text-[9px] sm:text-[10px] font-black uppercase tracking-widest">{stat.label}</p>
+                    <p className="text-2xl sm:text-3xl font-black text-[#7B4F1D]">{stat.value}</p>
                   </div>
-                  <span className="text-2xl opacity-50">{stat.icon}</span>
+                  <img 
+                    src={stat.img} 
+                    alt={stat.label} 
+                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain opacity-80"
+                  />
                 </div>
               </div>
             ))}
@@ -90,7 +114,7 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             {/* Functional Funnel Card */}
-            <div className="lg:col-span-2 bg-white rounded-3xl p-8 shadow-sm border border-[#EADCC8]/50">
+            <div className="lg:col-span-2 bg-[#FDF8F1] rounded-3xl p-6 sm:p-8 shadow-sm border border-[#EADCC8]/50">
               <div className="flex justify-between items-center mb-10">
                 <h2 className="text-xl font-black text-[#7B4F1D]">Placement Progress</h2>
                 <div className="text-right">
@@ -106,7 +130,7 @@ export default function AdminDashboard() {
                     <span>Selected</span>
                     <span>{stats.selected}</span>
                   </div>
-                  <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#EADCC8]/30 h-3 rounded-full overflow-hidden">
                     <div 
                       className="bg-green-500 h-full transition-all duration-700" 
                       style={{ width: `${(stats.selected / denominator) * 100}%` }}
@@ -120,7 +144,7 @@ export default function AdminDashboard() {
                     <span>In Review</span>
                     <span>{pending > 0 ? pending : 0}</span>
                   </div>
-                  <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#EADCC8]/30 h-3 rounded-full overflow-hidden">
                     <div 
                       className="bg-blue-500 h-full transition-all duration-700" 
                       style={{ width: `${(pending / denominator) * 100}%` }}
@@ -134,7 +158,7 @@ export default function AdminDashboard() {
                     <span>Rejected</span>
                     <span>{stats.rejected}</span>
                   </div>
-                  <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#EADCC8]/30 h-3 rounded-full overflow-hidden">
                     <div 
                       className="bg-red-400 h-full transition-all duration-700" 
                       style={{ width: `${(stats.rejected / denominator) * 100}%` }}
@@ -152,12 +176,11 @@ export default function AdminDashboard() {
                 { label: 'Placement Drives', path: '/admin/drives', icon: '🚀', desc: 'Create and track jobs' },
                 { label: 'Student Applications', path: '/admin/applications', icon: '👁️', desc: 'Update hiring status' },
                 { label: 'Company Directory', path: '/admin/companies', icon: '🤝', desc: 'Manage partners' },
-                // { label: 'Recruiters', path: '/admin/recruiters', icon: '🧑‍💼', desc: 'Create and manage recruiters' },
               ].map((link, idx) => (
                 <Link
                   key={idx}
                   to={link.path}
-                  className="block p-4 bg-white border border-[#EADCC8]/60 rounded-2xl hover:bg-[#7B4F1D] hover:text-white transition-all group shadow-sm"
+                  className="block p-4 bg-[#FDF8F1] border border-[#EADCC8]/60 rounded-2xl hover:bg-[#7B4F1D] hover:text-white transition-all group shadow-sm"
                 >
                   <div className="flex items-center gap-4">
                     <span className="text-2xl group-hover:scale-110 transition-transform">{link.icon}</span>
