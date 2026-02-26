@@ -103,7 +103,7 @@ export default function Landing() {
           {[
             { 
               role: 'Students', 
-              icon: '', 
+              icon: '👨🏻‍🎓', 
               desc: 'Build a dynamic profile, showcase your technical skills, and apply to top-tier companies with a single click.' 
             },
             { 
@@ -130,7 +130,7 @@ export default function Landing() {
       </section>
 
       {/* Value Proposition */}
-      <section className="bg-[#5c371e] py-24 px-6 text-white overflow-hidden relative">
+      {/* <section className=" py-24 px-6 text-white overflow-hidden relative">
         <div className="absolute right-0 bottom-0 opacity-10 text-[20rem] font-black leading-none select-none translate-y-1/2 translate-x-1/4">
           AVANI
         </div>
@@ -152,7 +152,6 @@ export default function Landing() {
               ))}
             </div>
           </div>
-          {/* Quote Box - using white/5 for transparency over the brown bg */}
           <div className="bg-white/5 p-8 rounded-[3rem] border border-white/10 backdrop-blur-sm">
              <p className="italic text-xl font-medium text-[#B08B5E]">"Our mission is to digitize the campus hiring experience, making it transparent, fast, and accessible for everyone involved."</p>
              <div className="mt-6 flex items-center gap-4">
@@ -168,7 +167,73 @@ export default function Landing() {
              </div>
           </div>
         </div>
-      </section>
+      </section> */}
+    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 bg-[#F8EFE2] text-[#4A2C14] overflow-hidden relative">
+
+  {/* Background Big Text */}
+  <div className="absolute right-0 bottom-0 
+                  text-[8rem] sm:text-[12rem] lg:text-[20rem] 
+                  opacity-5 font-black leading-none select-none 
+                  translate-y-1/3 sm:translate-y-1/2 
+                  translate-x-1/4 text-[#4A2C14]">
+    AVANI
+  </div>
+
+  <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    
+    {/* Left Content */}
+    <div>
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-6 sm:mb-8 leading-tight tracking-tight">
+        Built on the Modern <br/>
+        <span className="text-[#B08B5E]">MERN Tech-Stack</span>.
+      </h2>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+        {[
+          { t: 'Secure Access', d: 'Role-based authentication with JWT security.' },
+          { t: 'Live Tracking', d: 'Real-time status updates for applications.' },
+          { t: 'PDF Engine', d: 'Instant resume previews and downloads.' },
+          { t: 'Analytics', d: 'Data visualization for placement trends.' }
+        ].map((point, i) => (
+          <div key={i}>
+            <p className="text-[#B08B5E] font-black text-xs uppercase tracking-widest mb-1">
+              {point.t}
+            </p>
+            <p className="text-sm sm:text-xs text-[#5A371F]/80 font-medium leading-relaxed">
+              {point.d}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Quote Box */}
+    <div className="bg-[#EADBC8]/50 p-6 sm:p-8 rounded-3xl sm:rounded-[3rem] 
+                    border border-[#B08B5E]/20 backdrop-blur-sm">
+      
+      <p className="italic text-base sm:text-lg lg:text-xl font-medium text-[#5A371F]">
+        "Our mission is to digitize the campus hiring experience, making it transparent, fast, and accessible for everyone involved."
+      </p>
+
+      <div className="mt-6 flex items-center gap-4">
+        <img 
+          src="/image.png" 
+          alt="Development Team" 
+          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-[#B08B5E]"
+        />
+        <div>
+          <p className="font-black text-xs sm:text-sm uppercase text-[#4A2C14]">
+            Development Team
+          </p>
+          <p className="text-[9px] sm:text-[10px] text-[#5A371F]/60 uppercase font-bold tracking-widest">
+            Avani Enterprises
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
 
       <Footer />
     </div>
