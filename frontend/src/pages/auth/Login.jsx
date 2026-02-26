@@ -300,6 +300,11 @@ export default function Login() {
         <div className="w-full md:w-1/2 bg-[#F8EFE2] flex flex-col justify-center items-center p-8 lg:p-12">
           <div className="w-full max-w-sm">
             <header className="mb-8 text-center md:text-left">
+              <img
+                src="/image.png"
+                alt="Avani Logo"
+                className="h-12 w-12 mx-auto md:mx-0 mb-4 border-2 border-[#B08B5E] rounded-full md:hidden"
+              />
               <h2 className="text-3xl font-extrabold text-[#7B4F1D] mb-2">
                 Welcome Back
               </h2>
