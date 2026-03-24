@@ -12,7 +12,7 @@ export default function Loader() {
 
       {/* Brand Name */}
       <h2 className="mt-8 text-2xl font-bold text-[#5A371F] tracking-wide animate-pulse">
-        Avani EnterPrices
+       AVANI ENTERPRISES
       </h2>
 
       {/* Loading Text */}
